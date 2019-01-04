@@ -41,18 +41,18 @@ module.exports = function (app) {
         updated_on: Date.now(),
         open: true
       };
-    
      
-      if(!issue_title || !issue_text || !created_by) res.json(newIssue);
+      if(!issue_title || !issue_text || !created_by) {res.send('missing inputs')}
+      else {
 
- 
-      MongoClient.connect(CONNECTION_STRING, function(err, db) {
-        const collection = db.collection(project);
-        collection.insertOne(newIssue,function(err,doc){
-          newIssue._id = doc.insertedId;
-          res.json(newIssue);
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          const collection = db.collection(project);
+          collection.insertOne(newIssue,function(err,doc){
+            newIssue._id = doc.insertedId;
+            res.json(newIssue);
+          });
         });
-      });
+      }
 
     })
 
