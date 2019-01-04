@@ -83,9 +83,12 @@ module.exports = function (app) {
           toUpdate.updated_on = Date.now();
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
-              var myquery = { _id: id };
+              var myquery = { _id: new ObjectId(id) };
               var newvalues = { $set: toUpdate };
-              collection.updateOne(myquery, newvalues, function(err, res) {
+              collection.findAndModify({
+                query: myquery,
+                update: toUpdate
+              }, function(err, res) {
                 if (err) {
                    throw err;
                 } else {
