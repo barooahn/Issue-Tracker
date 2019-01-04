@@ -80,22 +80,23 @@ module.exports = function (app) {
         delete toUpdate._id
         if(count > 1) {
           console.log('here', toUpdate);
-       
+          toUpdate.updated_on = Date.now();
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
-//               res.json();
-
               var myquery = { _id: id };
               var newvalues = { $set: toUpdate };
-              db.collection.updateOne(myquery, newvalues, function(err, res) {
-                if (err) throw err;
-                console.log("1 document updated");
+              collection.updateOne(myquery, newvalues, function(err, res) {
+                if (err) {
+                   res.json({'could not update': id}); 
+                }
+                console.log('successfully updated');
+                res.json({'successfully updated'});
                 db.close();
               });
           });
         } else {
-          console.log('Nothing to update');
-          res.send('Nothing to update'); 
+          console.log('no updated field sent');
+          res.send('no updated field sent'); 
         }
       }
     })
