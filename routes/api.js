@@ -20,7 +20,18 @@ module.exports = function (app) {
   
     .get(function (req, res){
       var project = req.params.project;
-      
+      //POST /api/issues/{projectname} with form data containing 
+      //required issue_title, issue_text, created_by, and optional assigned_to and status_text.
+      //console.log(req.body);
+      const {issue_title, issue_text, created_by, assigned_to, status_text } = req.body
+      const newIssue = {
+        project: project,
+        issue_title: issue_title,
+        issue_text: issue_text,
+        created_by: created_by, 
+        assigned_to: assigned_to || null,
+        status_text: status_text || null
+      }
     })
     
     .post(function (req, res){
