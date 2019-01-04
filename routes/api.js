@@ -15,21 +15,14 @@ const mongoose = require('mongoose');
 
 module.exports = function (app) {
   
-  const Schema = mongoose.Schema;
+const CONNECTION_STRING = process.env.DB; 
+MongoClient.connect(CONNECTION_STRING, function(err, db) {
+  if(err) {
+      console.log('Database error: ' + err);
+  } else {
+      console.log('Successful database connection');
 
-  const issueSchema = new Schema({
-      project: {type:String,required:true},
-      issue_title: {type:String,required:true},
-      issue_text: {type:String,required:true},
-      created_by: {type:String,required:true},
-      assigned_to: {type:String},
-      status_text: {type:String},
-      created_on: {type:Date},
-      updated_on: {type:Date},
-      open: {type: Boolean}
-  }); 
-
-  const Issue = mongoose.model("Issue", issueSchema);  
+  }
 
   app.route('/api/issues/:project')
     .get(function (req, res){
@@ -48,9 +41,9 @@ module.exports = function (app) {
       });
 
       console.log(newIssue);
-      newIssue.save(function(err, data) {
-          console.log(data);
-      });
+      // newIssue.save(function(err, data) {
+      //     console.log(data);
+      // });
 
     })
 
@@ -69,5 +62,6 @@ module.exports = function (app) {
 
     });
 
+});  
 
 };
