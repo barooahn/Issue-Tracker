@@ -87,13 +87,13 @@ module.exports = function (app) {
               var newvalues = { $set: toUpdate };
               collection.updateOne(myquery, newvalues, function(err, res) {
                 if (err) {
-                   res.json({'could not update': id}); 
+                   res.send('could not update' +  id); 
                 }
                 console.log('successfully updated');
-                res.json({'successfully updated'});
                 db.close();
               });
           });
+          res.send('successfully updated');
         } else {
           console.log('no updated field sent');
           res.send('no updated field sent'); 
@@ -103,7 +103,6 @@ module.exports = function (app) {
 
     .delete(function (req, res){
       var project = req.params.project;
-
     });
 
 };
