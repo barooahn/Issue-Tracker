@@ -29,21 +29,21 @@ const issueSchema = new Schema({
 
 const Issue = mongoose.model("Issue", issueSchema);
 
+const CONNECTION_STRING = process.env.DB; 
+
+  
 module.exports = function (app) {
   
-const CONNECTION_STRING = process.env.DB; 
-MongoClient.connect(CONNECTION_STRING, function(err, db) {
-  if(err) {
-      console.log('Database error: ' + err);
-  } else {
-      console.log('Successful database connection');
-
-  }
 
   app.route('/api/issues/:project')
     .get(function (req, res){
       var project = req.params.project;
-      //POST /api/issues/{projectname} with form data containing 
+    
+    })
+
+    .post(function (req, res){
+      var project = req.params.project;
+        //POST /api/issues/{projectname} with form data containing 
       //required issue_title, issue_text, created_by, and optional assigned_to and status_text.
       console.log(req.body);
       const {issue_title, issue_text, created_by, assigned_to, status_text } = req.body
@@ -60,11 +60,15 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
       // newIssue.save(function(err, data) {
       //     console.log(data);
       // });
+    
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        if(err) {
+            console.log('Database error: ' + err);
+        } else {
+            console.log('Successful database connection');
+        }
 
-    })
-
-    .post(function (req, res){
-      var project = req.params.project;
+      }); 
 
     })
 
@@ -78,6 +82,5 @@ MongoClient.connect(CONNECTION_STRING, function(err, db) {
 
     });
 
-});  
-
 };
+
