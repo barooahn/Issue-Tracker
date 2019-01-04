@@ -29,9 +29,7 @@ module.exports = function (app) {
       //required issue_title, issue_text, created_by, and optional assigned_to and status_text.
       // console.log(req.body);
       const {issue_title, issue_text, created_by, assigned_to, status_text } = req.body
-       p = new Person(req.body);
-      
-    
+
       const newIssue =  {
         project: project,
         issue_title: issue_title,
@@ -45,8 +43,7 @@ module.exports = function (app) {
       };
     
      
-    
-      if(!issue_title || !issue_text || !created_by)
+      if(!issue_title || !issue_text || !created_by) res.json(newIssue);
 
  
       MongoClient.connect(CONNECTION_STRING, function(err, db) {
