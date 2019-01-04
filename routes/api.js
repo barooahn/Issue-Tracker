@@ -27,30 +27,35 @@ module.exports = function (app) {
       var project = req.params.project;
         //POST /api/issues/{projectname} with form data containing 
       //required issue_title, issue_text, created_by, and optional assigned_to and status_text.
-      console.log(req.body);
+      // console.log(req.body);
       const {issue_title, issue_text, created_by, assigned_to, status_text } = req.body
-      const newIssue = {
+       p = new Person(req.body);
+      
+    
+      const newIssue =  {
         project: project,
         issue_title: issue_title,
         issue_text: issue_text,
         created_by: created_by, 
         assigned_to: assigned_to || null,
         status_text: status_text || null,
-        created_on: {type:Date},
-    updated_on: {type:Date},
-    open: {type: Boolean}
+        created_on: Date.now(),
+        updated_on: Date.now(),
+        open: true
       };
-
-      //console.log(newIssue);
-
     
-        MongoClient.connect(CONNECTION_STRING, function(err, db) {
-          const collection = db.collection(project);
-          collection.insertOne(newIssue,function(err,doc){
-            newIssue._id = doc.insertedId;
-            res.json(newIssue);
-          });
+     
+    
+      if(!issue_title || !issue_text || !created_by)
+
+ 
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+        const collection = db.collection(project);
+        collection.insertOne(newIssue,function(err,doc){
+          newIssue._id = doc.insertedId;
+          res.json(newIssue);
         });
+      });
 
     })
 
