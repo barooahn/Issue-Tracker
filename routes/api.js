@@ -60,7 +60,11 @@ module.exports = function (app) {
       var project = req.params.project;
       if(!req.body._id) {res.send('missing inputs')}
       else {
-
+        console.log(req.body);
+        let update = req.body
+        for (let key in update) {
+           if updates[key] 
+        }
       }
     })
 
