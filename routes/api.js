@@ -51,6 +51,7 @@ module.exports = function (app) {
             newIssue._id = doc.insertedId;
             res.json(newIssue);
           });
+        db.close();
         });
       }
 
@@ -77,18 +78,24 @@ module.exports = function (app) {
            }
         }
         delete toUpdate._id
-        if(count > 0) {
-        console.log(toUpdate)
+        if(count > 1) {
+          console.log('here', toUpdate);
        
-//           MongoClient.connect(CONNECTION_STRING, function(err, db) {
-//             const collection = db.collection(project);
-//             db.collection.find({_id : id}, function(err,doc){
-
+          MongoClient.connect(CONNECTION_STRING, function(err, db) {
+            const collection = db.collection(project);
 //               res.json();
-//             });
-//           });
+
+              var myquery = { _id: id };
+              var newvalues = { $set: toUpdate };
+              db.collection.updateOne(myquery, newvalues, function(err, res) {
+                if (err) throw err;
+                console.log("1 document updated");
+                db.close();
+              });
+          });
         } else {
-           res.send('Nothing to update'); 
+          console.log('Nothing to update');
+          res.send('Nothing to update'); 
         }
       }
     })
