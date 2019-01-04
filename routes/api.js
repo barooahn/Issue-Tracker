@@ -63,24 +63,33 @@ module.exports = function (app) {
 
         //console.log(req.body);
         let toUpdate = {};
+        let count = 0;
         let id = req.body._id
-        delete toUpdate._id
         let formFields = req.body
         for (let key in formFields) {
            if (formFields[key] != "") {
-               toUpdate[key] = formFields[key] 
+            if(key == "open" && formFields[key] == 'false'){ 
+               toUpdate[key] = false;
+             }else {
+               toUpdate[key] = formFields[key]
+             }
+            count++
            }
         }
+        delete toUpdate._id
+        if(count > 0) {
         console.log(toUpdate)
-        
-        MongoClient.connect(CONNECTION_STRING, function(err, db) {
-          const collection = db.collection(project);
-          db.collection.find({_id : id}, function(err,doc){
-            
-            
-            res.json();
-          });
-        });
+       
+//           MongoClient.connect(CONNECTION_STRING, function(err, db) {
+//             const collection = db.collection(project);
+//             db.collection.find({_id : id}, function(err,doc){
+
+//               res.json();
+//             });
+//           });
+        } else {
+           res.send('Nothing to update'); 
+        }
       }
     })
 
