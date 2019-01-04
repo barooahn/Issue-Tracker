@@ -87,13 +87,14 @@ module.exports = function (app) {
               var newvalues = { $set: toUpdate };
               collection.updateOne(myquery, newvalues, function(err, res) {
                 if (err) {
-                   res.send('could not update' +  id); 
+                   throw err;
+                } else {
+                  console.log('successfully updated');
+                  console.log(res);
+                  db.close();
                 }
-                console.log('successfully updated');
-                db.close();
               });
           });
-          res.send('successfully updated');
         } else {
           console.log('no updated field sent');
           res.send('no updated field sent'); 
