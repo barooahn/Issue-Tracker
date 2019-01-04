@@ -60,15 +60,27 @@ module.exports = function (app) {
       var project = req.params.project;
       if(!req.body._id) {res.send('missing inputs')}
       else {
+
         //console.log(req.body);
         let toUpdate = {};
+        let id = req.body._id
+        delete toUpdate._id
         let formFields = req.body
         for (let key in formFields) {
            if (formFields[key] != "") {
-               toUpdate formFields 
+               toUpdate[key] = formFields[key] 
            }
         }
         console.log(toUpdate)
+        
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          const collection = db.collection(project);
+          db.collection.find({_id : id}, function(err,doc){
+            
+            
+            res.json();
+          });
+        });
       }
     })
 
