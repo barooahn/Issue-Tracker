@@ -13,6 +13,22 @@ var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 const mongoose = require('mongoose');
 
+const Schema = mongoose.Schema;
+
+const issueSchema = new Schema({
+    project: {type:String,required:true},
+    issue_title: {type:String,required:true},
+    issue_text: {type:String,required:true},
+    created_by: {type:String,required:true},
+    assigned_to: {type:String},
+    status_text: {type:String},
+    created_on: {type:Date},
+    updated_on: {type:Date},
+    open: {type: Boolean}
+}); 
+
+const Issue = mongoose.model("Issue", issueSchema);
+
 module.exports = function (app) {
   
 const CONNECTION_STRING = process.env.DB; 
