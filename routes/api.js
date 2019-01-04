@@ -79,14 +79,19 @@ module.exports = function (app) {
         }
         delete toUpdate._id
         if(count > 1) {
-          console.log('here', toUpdate);
           toUpdate.updated_on = Date.now();
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
-            collection.findAndModify({_id:new ObjectId(id)},[['_id',1]],{$set: toUpdate},{new: true},function(err,doc){
-            (!err) ? res.send('successfully updated') : res.send('could not update '+id+' '+err);
-            console.log(doc.value);
-            });
+            collection.findAndModify(
+              {_id:new ObjectId(id)},
+              [['_id',1]],
+              {$set: toUpdate},
+              {new: true},
+              function(err,doc){
+                (!err) ? res.send('successfully updated') : res.send('could not update '+id+' '+err);
+                console.log(doc.value);
+              }  
+            );
           });
         } else {
           console.log('no updated field sent');
