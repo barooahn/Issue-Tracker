@@ -83,20 +83,10 @@ module.exports = function (app) {
           toUpdate.updated_on = Date.now();
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
-              var myquery = { _id: new ObjectId(id) };
-              var newvalues = { $set: toUpdate };
-              collection.findAndModify({
-                query: myquery,
-                update: toUpdate
-              }, function(err, res) {
-                if (err) {
-                   throw err;
-                } else {
-                  console.log('successfully updated');
-                  console.log(res);
-                  db.close();
-                }
-              });
+            collection.findAndModify({_id:new ObjectId(id)},[['_id',1]],{$set: toUpdate},{new: true},function(err,doc){
+            (!err) ? res.send('successfully updated') : res.send('could not update '+id+' '+err);
+            console.log(doc.value);
+            });
           });
         } else {
           console.log('no updated field sent');
