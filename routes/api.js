@@ -58,7 +58,10 @@ module.exports = function (app) {
 
     .put(function (req, res){
       var project = req.params.project;
+      if(!req.body._id) {res.send('missing inputs')}
+      else {
 
+      }
     })
 
     .delete(function (req, res){
