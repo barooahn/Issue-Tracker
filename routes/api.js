@@ -88,7 +88,7 @@ module.exports = function (app) {
               {$set: toUpdate},
               {new: true},
               function(err,doc){
-                (!err) ? res.send('successfully updated') : res.send('could not update '+id+' '+err);
+                (!err) ? res.send('successfully updated') : res.send('could not update '+ id +' '+ err);
                 console.log(doc.value);
               }  
             );
