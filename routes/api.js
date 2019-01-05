@@ -107,13 +107,14 @@ module.exports = function (app) {
       if(!req.body._id) {res.send('_id error')}
       else if(!ObjectId.isValid(req.body._id)){res.send('invalid id')}
       else {
+        console.log('valid_id'); 
         MongoClient.connect(CONNECTION_STRING, function(err, db) {
           const collection = db.collection(project);
           collection.findAndRemove(
             {_id:new ObjectId(req.body._id)},
             [['_id',1]],
             function(err,doc){
-              (!err) ? res.send('success: deleted ' + req.body._id) : res.send('could not update '+ id +' '+ err);
+              (!err) ? res.send('success: deleted ' + req.body._id) : res.send('failed: could not delete ' + req.body._id + err);
             }  
           );
         });
