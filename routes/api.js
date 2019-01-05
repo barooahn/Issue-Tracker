@@ -23,10 +23,14 @@ module.exports = function (app) {
   app.route('/api/issues/:project')
     .get(function (req, res){
       var project = req.params.project;
-   //   var query = require('url').parse(req.url,true).query;
       const params = req.query;
-      console.log(params.assigned_to);
-   console.log('query ',req.query);
+      if(req.query._id){
+        if(!ObjectId.isValid(req.query._id)){res.send('invalid id')}
+        else {req.query._id = new ObjectId(req.query._id)} 
+      }
+      if(req.query.open == 'true'){req.query.open = true}
+      if(req.query.open == 'true'){req.query.open = true}
+
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
             collection.find(params).toArray(function(err, docs) {
