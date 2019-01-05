@@ -24,11 +24,13 @@ module.exports = function (app) {
     .get(function (req, res){
       var project = req.params.project;
    //   var query = require('url').parse(req.url,true).query;
-      let params = req.query;
-      console.log(params);
+      const params = req.query;
+      console.log(params.assigned_to);
    //   console.log(query);
     
-      //collection.find({}, {skip:1, limit:1, fields:{b:1}}).toArray(function(err, docs) {
+      collection.find(params).toArray(function(err, docs) {
+        console.log(docs);
+      }
     
     })
 
