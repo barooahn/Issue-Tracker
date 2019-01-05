@@ -26,8 +26,8 @@ suite('Functional Tests', function() {
           issue_title: 'Title',
           issue_text: 'text',
           created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Chai and Mocha',
-          status_text: 'In QA'
+          assigned_to: 'Bobby',
+          status_text: 'In Testing'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
@@ -44,8 +44,8 @@ suite('Functional Tests', function() {
           assert.equal(res.body.issue_title, 'Title');
           assert.equal(res.body.issue_text, 'text');
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
-          assert.equal(res.body.assigned_to, 'Chai and Mocha');
-          assert.equal(res.body.status_text, 'In QA');
+          assert.equal(res.body.assigned_to, 'Bobby');
+          assert.equal(res.body.status_text, 'In Testing');
           assert.isBoolean(res.body.open);
           assert.equal(res.body.open, true);
           done();
@@ -130,6 +130,7 @@ suite('Functional Tests', function() {
       });
       
       test('Multiple fields to update', function(done) {
+        
       chai.request(server)
         .put('/api/issues/test')
         .send({
@@ -173,7 +174,23 @@ suite('Functional Tests', function() {
       });
       
       test('One filter', function(done) {
-        
+        chai.request(server)
+        .get('/api/issues/test')
+        .query({issue_title: 'title1'})
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.property(res.body[0], 'issue_title');
+          assert.property(res.body[0], 'issue_text');
+          assert.property(res.body[0], 'created_on');
+          assert.property(res.body[0], 'updated_on');
+          assert.property(res.body[0], 'created_by');
+          assert.property(res.body[0], 'assigned_to');
+          assert.property(res.body[0], 'open');
+          assert.property(res.body[0], 'status_text');
+          assert.property(res.body[0], '_id');
+          assert.equal(res.body[0].open, 'true');
+          done();
+        });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
