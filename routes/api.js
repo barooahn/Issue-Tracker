@@ -59,10 +59,10 @@ module.exports = function (app) {
 
     .put(function (req, res){
       var project = req.params.project;
+      //test for id and valid id type 24hex chars
       if(!req.body._id) {res.send('missing inputs')}
+      else if(!ObjectId.isValid(req.body._id)){res.send('invalid id')}
       else {
-
-        //console.log(req.body);
         let toUpdate = {};
         let count = 0;
         let id = req.body._id
@@ -79,6 +79,7 @@ module.exports = function (app) {
         }
         delete toUpdate._id
         if(count > 1) {
+          console.log(toUpdate);          
           toUpdate.updated_on = Date.now();
           MongoClient.connect(CONNECTION_STRING, function(err, db) {
             const collection = db.collection(project);
@@ -89,7 +90,6 @@ module.exports = function (app) {
               {new: true},
               function(err,doc){
                 (!err) ? res.send('successfully updated') : res.send('could not update '+ id +' '+ err);
-                console.log(doc.value);
               }  
             );
           });
