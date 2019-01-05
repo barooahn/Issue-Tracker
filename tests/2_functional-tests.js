@@ -10,8 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
-var _id1;
-var _id2;
+let _id;
 
 chai.use(chaiHttp);
 
@@ -40,7 +39,7 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'open');
           assert.property(res.body, 'status_text');
           assert.property(res.body, '_id');
-          _id1 = res.body._id;
+          _id = res.body._id;
           assert.equal(res.body.issue_title, 'Title');
           assert.equal(res.body.issue_text, 'text');
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
@@ -71,7 +70,7 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'open');
           assert.property(res.body, 'status_text');
           assert.property(res.body, '_id');
-          _id1 = res.body._id;
+          _id = res.body._id;
           assert.equal(res.body.issue_title, 'Required-Title');
           assert.equal(res.body.issue_text, 'Required-text');
           assert.equal(res.body.created_by, 'Required-Functional Test - Every field filled in');
@@ -103,7 +102,7 @@ suite('Functional Tests', function() {
       test('No body', function(done) {
         chai.request(server)
         .put('/api/issues/test')
-        .send({_id: _id1})
+        .send({_id: _id})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.text, 'no updated field sent');
@@ -117,7 +116,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          _id: _id1,
+          _id: _id,
           issue_text: 'issue-text'
         })
         .end(function(err, res){
@@ -130,17 +129,17 @@ suite('Functional Tests', function() {
       });
       
       test('Multiple fields to update', function(done) {
-        
+         
       chai.request(server)
         .put('/api/issues/test')
         .send({
-          id: _id2,
+          _id: _id,
           issue_title: 'Title_update',
           issue_text: 'text_update',
           created_by: 'Functional Test - Multiple fields to update',
           assigned_to: 'Chai and Mocha_update',
           status_text: 'In QA_update',
-          open: 'false'
+          open: 'true'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
@@ -170,13 +169,13 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
           done();
-        });
+        }); 
       });
       
       test('One filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
-        .query({issue_title: 'title1'})
+        .query({issue_title: 'Required-Title'})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.property(res.body[0], 'issue_title');
@@ -188,7 +187,7 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'open');
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
-          assert.equal(res.body[0].open, 'true');
+          assert.equal(res.body[0].issue_title, 'Required-Title');
           done();
         });
       });
@@ -208,7 +207,7 @@ suite('Functional Tests', function() {
       test('Valid _id', function(done) {
         
       });
-      
+    
     });
 
 });
