@@ -96,7 +96,7 @@ suite('Functional Tests', function() {
           done();
         });
       });
-      
+  
     });
     
     suite('PUT /api/issues/{project} => text', function() {
@@ -189,7 +189,7 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'open');
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
-          assert.equal(res.body[0].issue_title, 'testing text');
+          assert.equal(res.body[0].issue_text, 'testing text');
           done();
         });
       });
@@ -198,7 +198,7 @@ suite('Functional Tests', function() {
         test('Multiple filters', function(done) {
           chai.request(server)
           .get('/api/issues/test')
-          .query({issue_title: 'testing text', issue_text: 'testing text'})
+          .query({issue_title: 'testing title', issue_text: 'testing text', assigned_to: "fcctester"})
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.property(res.body[0], 'issue_title');
@@ -210,8 +210,9 @@ suite('Functional Tests', function() {
             assert.property(res.body[0], 'open');
             assert.property(res.body[0], 'status_text');
             assert.property(res.body[0], '_id');
-            assert.equal(res.body[0].issue_title, 'testing text');
+            assert.equal(res.body[0].issue_title, 'testing title');
             assert.equal(res.body[0].issue_text, 'testing text');
+            assert.equal(res.body[0].assigned_to, 'fcctester');
             done();
           });
         });
@@ -236,10 +237,10 @@ suite('Functional Tests', function() {
       test('Valid _id', function(done) {
         chai.request(server)
         .delete('/api/issues/test')
-        .send({_id: _id})
+        .send({_id: _ida})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'deleted '+_id);
+          assert.equal(res.text, 'deleted '+_ida);
           //fill me in too!
           done();
         });
