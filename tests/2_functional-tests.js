@@ -71,11 +71,9 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'status_text');
           assert.property(res.body, '_id');
           _id1 = res.body._id;
-          assert.equal(res.body.issue_title, 'Title');
-          assert.equal(res.body.issue_text, 'text');
-          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
-          assert.equal(res.body.assigned_to, 'Chai and Mocha');
-          assert.equal(res.body.status_text, 'In QA');
+          assert.equal(res.body.issue_title, 'Required-Title');
+          assert.equal(res.body.issue_text, 'Required-text');
+          assert.equal(res.body.created_by, 'Required-Functional Test - Every field filled in');
           assert.isBoolean(res.body.open);
           assert.equal(res.body.open, true);
           done();
@@ -123,7 +121,7 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.body.issue_text, 'issue-text');
+          assert.equal(res.text, 'successfully updated');
           //fill me in too!
           
           done();
@@ -131,9 +129,24 @@ suite('Functional Tests', function() {
       });
       
       test('Multiple fields to update', function(done) {
-        
+      chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          id: _id1,
+          issue_title: 'Title_update',
+          issue_text: 'text_update',
+          created_by: 'Functional Test - Multiple fields to update',
+          assigned_to: 'Chai and Mocha_update',
+          status_text: 'In QA_update',
+          open: 'false'
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'successfully updated');
+          //fill me in too!
+          done();
+        });
       });
-      
     });
     
     suite('GET /api/issues/{project} => Array of objects with issue data', function() {
