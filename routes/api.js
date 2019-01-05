@@ -104,6 +104,8 @@ module.exports = function (app) {
 
     .delete(function (req, res){
       var project = req.params.project;
+      console.log(req.body._id);
+      console.log('here');
       if(!req.body._id) {res.send('_id error')}
       else if(!ObjectId.isValid(req.body._id)){res.send('invalid id')}
       else {
@@ -120,6 +122,5 @@ module.exports = function (app) {
         });
       }
     });
-
 };
 
