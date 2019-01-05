@@ -29,7 +29,13 @@ suite('Functional Tests', function() {
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
-          
+          assert.equal(res.body.issue_title, 'Title');
+          assert.equal(res.body.issue_text, 'text');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
+          assert.equal(res.body.assigned_to, 'Chai and Mocha');
+          assert.equal(res.body.status_text, 'In QA');
+          assert.isBoolean(res.body.open);
+          assert.equal(res.body.open, true);
           //fill me in too!
           
           done();
@@ -37,19 +43,56 @@ suite('Functional Tests', function() {
       });
       
       test('Required fields filled in', function(done) {
-        
+        chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Required-Title',
+          issue_text: 'Required-text',
+          created_by: 'Required-Functional Test - Every field filled in',
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.issue_title, 'Required-Title');
+          assert.equal(res.body.issue_text, 'Required-text');
+          assert.equal(res.body.created_by, 'Required-Functional Test - Every field filled in');
+          //fill me in too!
+          
+          done();
+        });
       });
       
       test('Missing required fields', function(done) {
-        
+        chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Required-Title',
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'missing inputs');
+          //fill me in too!
+          
+          done();
+        });
       });
       
     });
     
     suite('PUT /api/issues/{project} => text', function() {
-      
+
       test('No body', function(done) {
-        
+        chai.request(server)
+        .post('/api/issues/test')
+        .send({
+          issue_title: 'Required-Title',
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'missing inputs');
+          //fill me in too!
+          
+          done();
+        });
       });
       
       test('One field to update', function(done) {

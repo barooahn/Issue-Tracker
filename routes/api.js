@@ -28,18 +28,18 @@ module.exports = function (app) {
         if(!ObjectId.isValid(req.query._id)){res.send('invalid id')}
         else {req.query._id = new ObjectId(req.query._id)} 
       }
-      if(req.query.open == 'true'){req.query.open = true}
-      if(req.query.open == 'true'){req.query.open = true}
-
-          MongoClient.connect(CONNECTION_STRING, function(err, db) {
-            const collection = db.collection(project);
-            collection.find(params).toArray(function(err, docs) {
-              console.log(docs);
-              {res.json(docs)}
-            });
-          
-        db.close();
-        });
+      if(req.query.open ) {
+        if(req.query.open == 'true'){req.query.open = true}
+        if(req.query.open == 'false'){req.query.open = false}
+      }
+      MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          const collection = db.collection(project);
+          collection.find(params).toArray(function(err, docs) {
+            console.log(docs);
+            {res.json(docs)}
+          });
+      db.close();
+      });
     
     })
 
