@@ -237,7 +237,7 @@ suite('Functional Tests', function() {
         .send({_id: _id})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'deleted ');
+          assert.equal(res.text, 'deleted '+_id);
           //fill me in too!
           done();
         });
