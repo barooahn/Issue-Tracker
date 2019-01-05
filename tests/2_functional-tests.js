@@ -11,6 +11,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
 var _id1;
+var _id2;
 
 chai.use(chaiHttp);
 
@@ -132,7 +133,7 @@ suite('Functional Tests', function() {
       chai.request(server)
         .put('/api/issues/test')
         .send({
-          id: _id1,
+          id: _id2,
           issue_title: 'Title_update',
           issue_text: 'text_update',
           created_by: 'Functional Test - Multiple fields to update',
