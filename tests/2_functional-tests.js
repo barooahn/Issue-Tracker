@@ -10,7 +10,7 @@ var chaiHttp = require('chai-http');
 var chai = require('chai');
 var assert = chai.assert;
 var server = require('../server');
-let _id;
+let _ida;
 
 chai.use(chaiHttp);
 
@@ -22,8 +22,8 @@ suite('Functional Tests', function() {
        chai.request(server)
         .post('/api/issues/test')
         .send({
-          issue_title: 'Title',
-          issue_text: 'text',
+          issue_title: 'testing title',
+          issue_text: 'testing text',
           created_by: 'Functional Test - Every field filled in',
           assigned_to: 'fcctester',
           status_text: 'In QA_update'
@@ -39,9 +39,9 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'open');
           assert.property(res.body, 'status_text');
           assert.property(res.body, '_id');
-          _id = res.body._id;
-          assert.equal(res.body.issue_title, 'Title');
-          assert.equal(res.body.issue_text, 'text');
+          _ida = res.body._id;
+          assert.equal(res.body.issue_title, 'testing title');
+          assert.equal(res.body.issue_text, 'testing text');
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
           assert.equal(res.body.assigned_to, 'fcctester');
           assert.equal(res.body.status_text, 'In QA_update');
@@ -55,9 +55,9 @@ suite('Functional Tests', function() {
         chai.request(server)
         .post('/api/issues/test')
         .send({
-          issue_title: 'Required-Title',
-          issue_text: 'Required-text',
-          created_by: 'Required-Functional Test - Every field filled in',
+          issue_title: 'testing title',
+          issue_text: 'testing text',
+          created_by: 'Functional Test - Every field filled in'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
@@ -70,10 +70,10 @@ suite('Functional Tests', function() {
           assert.property(res.body, 'open');
           assert.property(res.body, 'status_text');
           assert.property(res.body, '_id');
-          _id = res.body._id;
-          assert.equal(res.body.issue_title, 'Required-Title');
-          assert.equal(res.body.issue_text, 'Required-text');
-          assert.equal(res.body.created_by, 'Required-Functional Test - Every field filled in');
+          _ida = res.body._id;
+          assert.equal(res.body.issue_title, 'testing title');
+          assert.equal(res.body.issue_text, 'testing text');
+          assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
           assert.equal(res.body.assigned_to, '');
           assert.equal(res.body.status_text, '');
           assert.isBoolean(res.body.open);
@@ -86,7 +86,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .post('/api/issues/test')
         .send({
-          issue_title: 'Required-Title',
+          issue_title: 'testing title'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
@@ -104,7 +104,7 @@ suite('Functional Tests', function() {
       test('No body', function(done) {
         chai.request(server)
         .put('/api/issues/test')
-        .send({_id: _id})
+        .send({_id: _ida})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.equal(res.text, 'no updated field sent');
@@ -118,7 +118,7 @@ suite('Functional Tests', function() {
         chai.request(server)
         .put('/api/issues/test')
         .send({
-          _id: _id,
+          _id: _ida,
           issue_text: 'issue-text'
         })
         .end(function(err, res){
@@ -135,7 +135,7 @@ suite('Functional Tests', function() {
       chai.request(server)
         .put('/api/issues/test')
         .send({
-          _id: _id,
+          _id: _ida,
           issue_title: 'Title_update',
           issue_text: 'text_update',
           created_by: 'Functional Test - Multiple fields to update',
@@ -177,7 +177,7 @@ suite('Functional Tests', function() {
       test('One filter', function(done) {
         chai.request(server)
         .get('/api/issues/test')
-        .query({issue_title: 'Required-Title'})
+        .query({issue_text: 'testing text'})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.property(res.body[0], 'issue_title');
@@ -189,32 +189,32 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'open');
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
-          assert.equal(res.body[0].issue_title, 'Required-Title');
+          assert.equal(res.body[0].issue_title, 'testing text');
           done();
         });
       });
       
       test('Multiple filters (test for multiple fields you know will be in the db for a return)', function(done) {
         test('Multiple filters', function(done) {
-        chai.request(server)
-        .get('/api/issues/test')
-        .query({issue_title: 'title1', assigned_to: 'fcctester'})
-        .end(function(err, res){
-          assert.equal(res.status, 200);
-          assert.property(res.body[0], 'issue_title');
-          assert.property(res.body[0], 'issue_text');
-          assert.property(res.body[0], 'created_on');
-          assert.property(res.body[0], 'updated_on');
-          assert.property(res.body[0], 'created_by');
-          assert.property(res.body[0], 'assigned_to');
-          assert.property(res.body[0], 'open');
-          assert.property(res.body[0], 'status_text');
-          assert.property(res.body[0], '_id');
-          assert.equal(res.body[0].issue_title, 'title1');
-          assert.equal(res.body[0].assigned_to, 'fcctester');
-          done();
+          chai.request(server)
+          .get('/api/issues/test')
+          .query({issue_title: 'testing text', issue_text: 'testing text'})
+          .end(function(err, res){
+            assert.equal(res.status, 200);
+            assert.property(res.body[0], 'issue_title');
+            assert.property(res.body[0], 'issue_text');
+            assert.property(res.body[0], 'created_on');
+            assert.property(res.body[0], 'updated_on');
+            assert.property(res.body[0], 'created_by');
+            assert.property(res.body[0], 'assigned_to');
+            assert.property(res.body[0], 'open');
+            assert.property(res.body[0], 'status_text');
+            assert.property(res.body[0], '_id');
+            assert.equal(res.body[0].issue_title, 'testing text');
+            assert.equal(res.body[0].issue_text, 'testing text');
+            done();
+          });
         });
-      });
       });
       
     });
