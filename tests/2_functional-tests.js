@@ -169,7 +169,7 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
           done();
-        }); 
+        });
       });
       
       test('One filter', function(done) {
