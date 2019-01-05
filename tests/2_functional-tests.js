@@ -25,8 +25,8 @@ suite('Functional Tests', function() {
           issue_title: 'Title',
           issue_text: 'text',
           created_by: 'Functional Test - Every field filled in',
-          assigned_to: 'Bobby',
-          status_text: 'In Testing'
+          assigned_to: 'fcctester',
+          status_text: 'In QA_update'
         })
         .end(function(err, res){
           assert.equal(res.status, 200);
@@ -43,8 +43,8 @@ suite('Functional Tests', function() {
           assert.equal(res.body.issue_title, 'Title');
           assert.equal(res.body.issue_text, 'text');
           assert.equal(res.body.created_by, 'Functional Test - Every field filled in');
-          assert.equal(res.body.assigned_to, 'Bobby');
-          assert.equal(res.body.status_text, 'In Testing');
+          assert.equal(res.body.assigned_to, 'fcctester');
+          assert.equal(res.body.status_text, 'In QA_update');
           assert.isBoolean(res.body.open);
           assert.equal(res.body.open, true);
           done();
@@ -74,6 +74,8 @@ suite('Functional Tests', function() {
           assert.equal(res.body.issue_title, 'Required-Title');
           assert.equal(res.body.issue_text, 'Required-text');
           assert.equal(res.body.created_by, 'Required-Functional Test - Every field filled in');
+          assert.equal(res.body.assigned_to, '');
+          assert.equal(res.body.status_text, '');
           assert.isBoolean(res.body.open);
           assert.equal(res.body.open, true);
           done();
@@ -196,7 +198,7 @@ suite('Functional Tests', function() {
         test('Multiple filters', function(done) {
         chai.request(server)
         .get('/api/issues/test')
-        .query({issue_title: 'Title', issue_text: 'text'})
+        .query({issue_title: 'title1', assigned_to: 'fcctester'})
         .end(function(err, res){
           assert.equal(res.status, 200);
           assert.property(res.body[0], 'issue_title');
@@ -208,8 +210,8 @@ suite('Functional Tests', function() {
           assert.property(res.body[0], 'open');
           assert.property(res.body[0], 'status_text');
           assert.property(res.body[0], '_id');
-          assert.equal(res.body[0].issue_title, 'Title');
-          assert.equal(res.body[0].issue_text, 'text');
+          assert.equal(res.body[0].issue_title, 'title1');
+          assert.equal(res.body[0].assigned_to, 'fcctester');
           done();
         });
       });
