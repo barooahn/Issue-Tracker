@@ -23,7 +23,8 @@ module.exports = function (app) {
   app.route('/api/issues/:project')
     .get(function (req, res){
       var project = req.params.project;
-      
+      const params = req.params;
+      console.log(params);
       //collection.find({}, {skip:1, limit:1, fields:{b:1}}).toArray(function(err, docs) {
     
     })
