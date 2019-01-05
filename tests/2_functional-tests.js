@@ -82,13 +82,11 @@ suite('Functional Tests', function() {
 
       test('No body', function(done) {
         chai.request(server)
-        .post('/api/issues/test')
-        .send({
-          issue_title: 'Required-Title',
-        })
+        .put('/api/issues/test')
+        .send({_id: '12313'})
         .end(function(err, res){
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'missing inputs');
+          assert.equal(res.text, 'no updated field sent');
           //fill me in too!
           
           done();
@@ -96,7 +94,20 @@ suite('Functional Tests', function() {
       });
       
       test('One field to update', function(done) {
+        chai.request(server)
+        .put('/api/issues/test')
+        .send({
+          _id: '12313',
+          issue_text: 'issue-text',
         
+        })
+        .end(function(err, res){
+          assert.equal(res.status, 200);
+          assert.equal(res.body.issue_text, 'issue-text');
+          //fill me in too!
+          
+          done();
+        });
       });
       
       test('Multiple fields to update', function(done) {
