@@ -13,7 +13,6 @@ var MongoClient = require('mongodb');
 var ObjectId = require('mongodb').ObjectID;
 
 const CONNECTION_STRING = process.env.DB; 
-
   
 module.exports = function (app) {
   //I can GET /api/issues/{projectname} for an array of all issues on that specific project with all the 

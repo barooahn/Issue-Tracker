@@ -37,7 +37,7 @@ suite('Functional Tests', function() {
           assert.isBoolean(res.body.open);
           assert.equal(res.body.open, true);
           //fill me in too!
-          
+        
           done();
         });
       });
