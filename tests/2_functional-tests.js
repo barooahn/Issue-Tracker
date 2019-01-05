@@ -198,7 +198,7 @@ suite('Functional Tests', function() {
         test('Multiple filters', function(done) {
           chai.request(server)
           .get('/api/issues/test')
-          .query({issue_title: 'testing title', issue_text: 'testing text', assigned_to: "fcctester"})
+          .query({issue_title: 'testing title', issue_text: 'issue-text'})
           .end(function(err, res){
             assert.equal(res.status, 200);
             assert.property(res.body[0], 'issue_title');
@@ -212,7 +212,6 @@ suite('Functional Tests', function() {
             assert.property(res.body[0], '_id');
             assert.equal(res.body[0].issue_title, 'testing title');
             assert.equal(res.body[0].issue_text, 'testing text');
-            assert.equal(res.body[0].assigned_to, 'fcctester');
             done();
           });
         });
