@@ -99,9 +99,25 @@ module.exports = function (app) {
         }
       }
     })
+  
+    // If no _id is sent return '_id error', success: 'deleted '+_id, failed: 'could not delete '+_id.
 
     .delete(function (req, res){
       var project = req.params.project;
+      if(!req.body._id) {res.send('_id error')}
+      else if(!ObjectId.isValid(req.body._id)){res.send('invalid id')}
+      else {
+        MongoClient.connect(CONNECTION_STRING, function(err, db) {
+          const collection = db.collection(project);
+          collection.findAndRemove(
+            {_id:new ObjectId(req.body._id)},
+            [['_id',1]],
+            function(err,doc){
+              (!err) ? res.send('success: deleted ' + req.body._id) : res.send('could not update '+ id +' '+ err);
+            }  
+          );
+        });
+      }
     });
 
 };
