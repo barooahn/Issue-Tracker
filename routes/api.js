@@ -26,11 +26,16 @@ module.exports = function (app) {
    //   var query = require('url').parse(req.url,true).query;
       const params = req.query;
       console.log(params.assigned_to);
-   //   console.log(query);
-    
-      collection.find(params).toArray(function(err, docs) {
-        console.log(docs);
-      }
+   console.log('query ',req.query);
+          MongoClient.connect(CONNECTION_STRING, function(err, db) {
+            const collection = db.collection(project);
+            collection.find(params).toArray(function(err, docs) {
+              console.log(docs);
+              {res.json(docs)}
+            });
+          
+        db.close();
+        });
     
     })
 
