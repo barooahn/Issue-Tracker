@@ -35,8 +35,8 @@ module.exports = function (app) {
         issue_title: issue_title,
         issue_text: issue_text,
         created_by: created_by, 
-        assigned_to: assigned_to || null,
-        status_text: status_text || null,
+        assigned_to: assigned_to || '',
+        status_text: status_text || '',
         created_on: Date.now(),
         updated_on: Date.now(),
         open: true
@@ -116,7 +116,7 @@ module.exports = function (app) {
             {_id:new ObjectId(req.body._id)},
             [['_id',1]],
             function(err,doc){
-              (!err) ? res.send('success: deleted ' + req.body._id) : res.send('failed: could not delete ' + req.body._id + err);
+              (!err) ? res.send('deleted ' + req.body._id) : res.send('could not delete ' + req.body._id + err);
             }  
           );
         });
