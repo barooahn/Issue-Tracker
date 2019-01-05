@@ -16,10 +16,15 @@ const CONNECTION_STRING = process.env.DB;
 
   
 module.exports = function (app) {
-  
+  //I can GET /api/issues/{projectname} for an array of all issues on that specific project with all the 
+  //information for each issue as was returned when posted.
+  //I can filter my get request by also passing along any field and value in the query
+  //(ie. /api/issues/{project}?open=false). I can pass along as many fields/values as I want.
   app.route('/api/issues/:project')
     .get(function (req, res){
       var project = req.params.project;
+      
+      //collection.find({}, {skip:1, limit:1, fields:{b:1}}).toArray(function(err, docs) {
     
     })
 
